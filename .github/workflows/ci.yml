@@ -1,0 +1,61 @@
+---
+name: CI/CD
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      workflow:
+        required: true
+        type: choice
+        options:
+          - lint-and-scan
+          - upgrade
+        description: Choose the workflow to run
+        default: lint-and-scan
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  terraform-lint-and-scan:
+    if: >
+      github.event_name == 'push'
+      || (
+        github.event_name == 'pull_request'
+        && (! startswith(github.head_ref, 'dependabot/terraform/'))
+        && (! startswith(github.head_ref, 'renovate/'))
+      ) || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'lint-and-scan')
+    uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lint-and-scan.yml@main
+    with:
+      search-path: .
+      terraform-version: latest
+      terragrunt-version: latest
+  terraform-lock-files-upgrade-and-pr-merge:
+    if: >
+      (
+        github.event_name == 'pull_request'
+        && (startswith(github.head_ref, 'dependabot/terraform/') || startswith(github.head_ref, 'renovate/'))
+      ) || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'upgrade')
+    uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lock-files-upgrade-and-pr-merge.yml@main
+    with:
+      terragrunt-working-directories: envs/dev
+      terraform-version: latest
+      merged-pr-branch-prefix: ${{ startswith(github.head_ref, 'dependabot/terraform/') && 'dependabot/terraform/' || null }}
+      delete-merged-branch: true
+      search-path-for-lint-and-scan: .
+      terragrunt-version: latest
+      merge-pr: ${{ github.event_name == 'pull_request' }}
+  dependabot-auto-merge:
+    if: >
+      github.event_name == 'pull_request'
+      && github.actor == 'dependabot[bot]'
+      && (! startswith(github.head_ref, 'dependabot/terraform/'))
+    needs:
+      - terraform-lint-and-scan
+    uses: dceoy/gh-actions-for-devops/.github/workflows/dependabot-auto-merge.yml@main
+    with:
+      unconditional: true
