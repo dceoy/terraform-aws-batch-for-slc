@@ -62,12 +62,6 @@ variable "ec2_launch_template_block_device_mappings_ebs_throughput" {
   default     = null
 }
 
-variable "ec2_instance_types" {
-  description = "EC2 instance types"
-  type        = list(string)
-  default     = []
-}
-
 variable "ec2_security_group_ids" {
   description = "EC2 security group IDs"
   type        = list(string)
@@ -82,6 +76,12 @@ variable "private_subnet_ids" {
 
 variable "batch_job_iam_role_managed_policy_arns" {
   description = "IAM role managed policy ARNs for the Batch job IAM role"
+  type        = list(string)
+  default     = []
+}
+
+variable "batch_compute_environment_compute_resources_instance_type" {
+  description = "EC2 instance types for the Batch compute environment compute resources"
   type        = list(string)
   default     = []
 }

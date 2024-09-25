@@ -36,7 +36,7 @@ resource "aws_batch_compute_environment" "ec2" {
     max_vcpus           = var.batch_compute_environment_compute_resources_max_vcpus
     min_vcpus           = var.batch_compute_environment_compute_resources_min_vcpus
     instance_role       = aws_iam_role.ec2[0].arn
-    instance_type       = var.ec2_instance_types
+    instance_type       = var.batch_compute_environment_compute_resources_instance_type
     allocation_strategy = each.key == "spot" ? var.batch_compute_environment_compute_resources_allocation_strategy_spot : var.batch_compute_environment_compute_resources_allocation_strategy_ondemand
     desired_vcpus       = var.batch_compute_environment_compute_resources_desired_vcpus
     placement_group     = var.batch_compute_environment_compute_resources_placement_group
@@ -248,7 +248,7 @@ resource "aws_iam_role" "job" {
 }
 
 resource "aws_iam_role" "ec2" {
-  count                 = length(var.ec2_instance_types) > 0 ? 1 : 0
+  count                 = length(var.batch_compute_environment_compute_resources_instance_type) > 0 ? 1 : 0
   name                  = "${var.system_name}-${var.env_type}-batch-ec2-instance-iam-role"
   description           = "Batch EC2 instance IAM role"
   force_detach_policies = var.iam_role_force_detach_policies
