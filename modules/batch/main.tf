@@ -35,7 +35,7 @@ resource "aws_batch_compute_environment" "ec2" {
     security_group_ids  = var.ec2_security_group_ids
     max_vcpus           = var.batch_compute_environment_compute_resources_max_vcpus
     min_vcpus           = var.batch_compute_environment_compute_resources_min_vcpus
-    instance_role       = aws_iam_role.ec2[0].arn
+    instance_role       = aws_iam_instance_profile.ec2[0].arn
     instance_type       = var.batch_compute_environment_compute_resources_instance_type
     allocation_strategy = each.key == "spot" ? var.batch_compute_environment_compute_resources_allocation_strategy_spot : var.batch_compute_environment_compute_resources_allocation_strategy_ondemand
     desired_vcpus       = var.batch_compute_environment_compute_resources_desired_vcpus
@@ -49,10 +49,6 @@ resource "aws_batch_compute_environment" "ec2" {
       launch_template_id = aws_launch_template.ec2[0].id
       version            = var.batch_compute_environment_compute_resources_launch_template_version
     }
-  }
-  update_policy {
-    job_execution_timeout_minutes = var.batch_compute_environment_update_policy_job_execution_timeout_minutes
-    terminate_jobs_on_update      = var.batch_compute_environment_update_policy_terminate_jobs_on_update
   }
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-compute-environment-ec2-${each.key}"
@@ -102,12 +98,6 @@ resource "aws_batch_job_queue" "fargate" {
     order               = 1
     compute_environment = each.value.arn
   }
-  job_state_time_limit_action {
-    state            = "RUNNABLE"
-    action           = "CANCEL"
-    max_time_seconds = var.batch_job_queue_job_state_time_limit_action_max_time_seconds
-    reason           = "Job state time limit exceeded"
-  }
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-job-queue-fargate-${each.key}"
     SystemName = var.system_name
@@ -123,12 +113,6 @@ resource "aws_batch_job_queue" "ec2" {
   compute_environment_order {
     order               = 1
     compute_environment = each.value.arn
-  }
-  job_state_time_limit_action {
-    state            = "RUNNABLE"
-    action           = "CANCEL"
-    max_time_seconds = var.batch_job_queue_job_state_time_limit_action_max_time_seconds
-    reason           = "Job state time limit exceeded"
   }
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-job-queue-ec2-${each.key}"

@@ -160,32 +160,6 @@ variable "batch_compute_environment_compute_resources_placement_group" {
   default     = null
 }
 
-variable "batch_compute_environment_update_policy_job_execution_timeout_minutes" {
-  description = "Job execution timeout in minutes for the Batch compute environment update policy"
-  type        = number
-  default     = 30
-  validation {
-    condition     = var.batch_compute_environment_update_policy_job_execution_timeout_minutes > 0 && var.batch_compute_environment_update_policy_job_execution_timeout_minutes <= 360
-    error_message = "Job execution timeout in minutes for the Batch compute environment update policy must be between 1 and 360"
-  }
-}
-
-variable "batch_compute_environment_update_policy_terminate_jobs_on_update" {
-  description = "Whether to terminate jobs on update for the Batch compute environment update policy"
-  type        = bool
-  default     = false
-}
-
-variable "batch_job_queue_job_state_time_limit_action_max_time_seconds" {
-  description = "Maximum time in seconds for the Batch job queue job state time limit action"
-  type        = number
-  default     = 86400
-  validation {
-    condition     = var.batch_job_queue_job_state_time_limit_action_max_time_seconds >= 600 && var.batch_job_queue_job_state_time_limit_action_max_time_seconds <= 86400
-    error_message = "Maximum time in seconds for the Batch job queue job state time limit action must be between 600 and 86400"
-  }
-}
-
 variable "batch_client_iam_role_max_session_duration" {
   description = "IAM role maximum session duration for the Batch client IAM role"
   type        = number

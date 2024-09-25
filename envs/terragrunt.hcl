@@ -1,5 +1,5 @@
 locals {
-  image_name                                                = "batch-hello-world"
+  image_name                                                = "ubuntu"
   repo_root                                                 = get_repo_root()
   env_vars                                                  = read_terragrunt_config(find_in_parent_folders("env.hcl"))
   batch_compute_environment_compute_resources_instance_type = ["m7g", "c7g", "r7g", "r8g"]
@@ -101,9 +101,6 @@ inputs = {
   batch_compute_environment_compute_resources_spot_bid_percentage                = 100
   batch_compute_environment_ec2_configuration_image_type                         = "ECS_AL2"
   batch_compute_environment_launch_template_version                              = "$Latest"
-  batch_compute_environment_update_policy_job_execution_timeout_minutes          = 30
-  batch_compute_environment_update_policy_terminate_jobs_on_update               = false
-  batch_job_queue_job_state_time_limit_action_max_time_seconds                   = 86400
   batch_client_iam_role_max_session_duration                                     = 3600
   batch_job_definition_name_prefix                                               = local.image_name
   batch_job_definition_container_properties_command                              = ["echo", "Hello, world!"]
