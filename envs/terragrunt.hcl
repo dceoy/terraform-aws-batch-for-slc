@@ -51,11 +51,9 @@ EOF
 
 catalog {
   urls = [
-    "${local.repo_root}/modules/kms",
-    "${local.repo_root}/modules/s3",
     "github.com/dceoy/submodules/terraform-aws-vpc-for-slc",
     "github.com/dceoy/submodules/terraform-aws-docker-based-lambda",
-    # "${local.repo_root}/modules/batch"
+    "${local.repo_root}/modules/batch"
   ]
 }
 
@@ -74,28 +72,41 @@ inputs = {
   enable_s3_server_access_logging           = true
   vpc_cidr_block                            = "10.0.0.0/16"
   vpc_secondary_cidr_blocks                 = []
-  cloudwatch_logs_retention_in_days         = 30
   private_subnet_count                      = 1
   public_subnet_count                       = 1
   subnet_newbits                            = 8
   nat_gateway_count                         = 0
   vpc_interface_endpoint_services = [
-    "ecr.dkr", "ecr.api", "ecs", "ecs-agent", "ecs-telemetry",
-    "logs", "kms", "secretsmanager"
+    "ecr.dkr", "ecr.api", "ecs", "ecs-agent", "ecs-telemetry", "logs", "kms", "secretsmanager"
   ]
-  ecr_repository_name               = local.image_name
-  ecr_image_secondary_tags          = compact(split(",", get_env("DOCKER_METADATA_OUTPUT_TAGS", "latest")))
-  ecr_image_tag_mutability          = "MUTABLE"
-  ecr_force_delete                  = true
-  ecr_lifecycle_policy_image_count  = 1
-  docker_image_force_remove         = true
-  docker_image_build                = local.env_vars.locals.docker_image_build
-  docker_image_build_context        = "${local.repo_root}/docker"
-  docker_image_build_dockerfile     = "Dockerfile"
-  docker_image_build_build_args     = {}
-  docker_image_build_platform       = "linux/arm64"
-  docker_image_primary_tag          = get_env("DOCKER_PRIMARY_TAG", run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD"))
-  docker_host                       = get_env("DOCKER_HOST", "unix:///var/run/docker.sock")
-  cloudwatch_logs_retention_in_days = 30
-  iam_role_force_detach_policies    = true
+  ecr_repository_name                                                      = local.image_name
+  ecr_image_secondary_tags                                                 = compact(split(",", get_env("DOCKER_METADATA_OUTPUT_TAGS", "latest")))
+  ecr_image_tag_mutability                                                 = "MUTABLE"
+  ecr_force_delete                                                         = true
+  ecr_lifecycle_policy_image_count                                         = 1
+  docker_image_force_remove                                                = true
+  docker_image_build                                                       = local.env_vars.locals.docker_image_build
+  docker_image_build_context                                               = "${local.repo_root}/docker"
+  docker_image_build_dockerfile                                            = "Dockerfile"
+  docker_image_build_build_args                                            = {}
+  docker_image_build_platform                                              = "linux/arm64"
+  docker_image_primary_tag                                                 = get_env("DOCKER_PRIMARY_TAG", run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD"))
+  docker_host                                                              = get_env("DOCKER_HOST", "unix:///var/run/docker.sock")
+  cloudwatch_logs_retention_in_days                                        = 30
+  iam_role_force_detach_policies                                           = true
+  ec2_launch_template_block_device_mappings_device_name                    = "/dev/xvda"
+  ec2_launch_template_block_device_mappings_ebs_volume_size                = 1024
+  ec2_launch_template_block_device_mappings_ebs_volume_type                = "gp3"
+  ec2_instance_types                                                       = ["m7g", "c7g", "r7g", "r8g"]
+  batch_compute_environment_compute_resources_max_vcpus                    = 256
+  batch_compute_environment_compute_resources_min_vcpus                    = 0
+  batch_compute_environment_compute_resources_allocation_strategy_ondemand = "BEST_FIT"
+  batch_compute_environment_compute_resources_allocation_strategy_spot     = "SPOT_CAPACITY_OPTIMIZED"
+  batch_compute_environment_compute_resources_spot_bid_percentage          = 100
+  batch_compute_environment_ec2_configuration_image_type                   = "ECS_AL2"
+  batch_compute_environment_launch_template_version                        = "$Latest"
+  batch_compute_environment_update_policy_job_execution_timeout_minutes    = 30
+  batch_compute_environment_update_policy_terminate_jobs_on_update         = false
+  batch_job_queue_job_state_time_limit_action_max_time_seconds             = 86400
+  batch_client_iam_role_max_session_duration                               = 3600
 }
