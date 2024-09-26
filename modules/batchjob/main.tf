@@ -1,6 +1,5 @@
 resource "aws_batch_job_definition" "fargate" {
-  for_each              = toset(["ondemand", "spot"])
-  name                  = "${local.batch_job_definition_name_prefix}-on-fargate-${each.key}"
+  name                  = "${local.batch_job_definition_name_prefix}-on-fargate"
   platform_capabilities = ["FARGATE"]
   type                  = "container"
   propagate_tags        = true
@@ -64,15 +63,15 @@ resource "aws_batch_job_definition" "fargate" {
     }
   }
   tags = {
-    Name       = "${local.batch_job_definition_name_prefix}-on-fargate-${each.key}"
+    Name       = "${local.batch_job_definition_name_prefix}-on-fargate"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
 }
 
 resource "aws_batch_job_definition" "ec2" {
-  for_each              = toset(var.create_batch_ec2_job_definitions ? ["ondemand", "spot"] : [])
-  name                  = "${local.batch_job_definition_name_prefix}-on-ec2-${each.key}"
+  count                 = var.create_batch_ec2_job_definitions ? 1 : 0
+  name                  = "${local.batch_job_definition_name_prefix}-on-ec2"
   platform_capabilities = ["EC2"]
   type                  = "container"
   propagate_tags        = true
@@ -130,7 +129,7 @@ resource "aws_batch_job_definition" "ec2" {
     }
   }
   tags = {
-    Name       = "${local.batch_job_definition_name_prefix}-on-ec2-${each.key}"
+    Name       = "${local.batch_job_definition_name_prefix}-on-ec2"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
