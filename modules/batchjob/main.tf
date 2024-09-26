@@ -14,8 +14,13 @@ resource "aws_batch_job_definition" "fargate" {
         awslogs-group = var.batch_cloudwatch_logs_log_group_name
       }
     }
-    command     = var.batch_job_definition_container_properties_command
-    environment = var.batch_job_definition_container_properties_environment
+    command = var.batch_job_definition_container_properties_command
+    environment = [
+      for k, v in var.batch_job_definition_container_properties_environment_variables : {
+        name  = k
+        value = v
+      }
+    ]
     resourceRequirements = [
       {
         type  = "VCPU"
@@ -38,19 +43,25 @@ resource "aws_batch_job_definition" "fargate" {
     privileged             = false
     readonlyRootFilesystem = false
   })
-  retry_strategy {
-    attempts = var.batch_job_definition_retry_strategy_attempts
-    evaluate_on_exit {
-      on_status_reason = "Host EC2*"
-      action           = "RETRY"
-    }
-    evaluate_on_exit {
-      on_reason = "*"
-      action    = "EXIT"
+  dynamic "retry_strategy" {
+    for_each = var.batch_job_definition_retry_strategy_attempts > 0 ? [true] : []
+    content {
+      attempts = var.batch_job_definition_retry_strategy_attempts
+      evaluate_on_exit {
+        on_status_reason = "Host EC2*"
+        action           = "RETRY"
+      }
+      evaluate_on_exit {
+        on_reason = "*"
+        action    = "EXIT"
+      }
     }
   }
-  timeout {
-    attempt_duration_seconds = var.batch_job_definition_timeout_attempt_duration_seconds
+  dynamic "timeout" {
+    for_each = var.batch_job_definition_timeout_attempt_duration_seconds > 0 ? [true] : []
+    content {
+      attempt_duration_seconds = var.batch_job_definition_timeout_attempt_duration_seconds
+    }
   }
   tags = {
     Name       = "${local.batch_job_definition_name_prefix}-on-fargate-${each.key}"
@@ -75,8 +86,13 @@ resource "aws_batch_job_definition" "ec2" {
         awslogs-group = var.batch_cloudwatch_logs_log_group_name
       }
     }
-    command     = var.batch_job_definition_container_properties_command
-    environment = var.batch_job_definition_container_properties_environment
+    command = var.batch_job_definition_container_properties_command
+    environment = [
+      for k, v in var.batch_job_definition_container_properties_environment_variables : {
+        name  = k
+        value = v
+      }
+    ]
     resourceRequirements = [
       {
         type  = "VCPU"
@@ -93,19 +109,25 @@ resource "aws_batch_job_definition" "ec2" {
     privileged             = false
     readonlyRootFilesystem = false
   })
-  retry_strategy {
-    attempts = var.batch_job_definition_retry_strategy_attempts
-    evaluate_on_exit {
-      on_status_reason = "Host EC2*"
-      action           = "RETRY"
-    }
-    evaluate_on_exit {
-      on_reason = "*"
-      action    = "EXIT"
+  dynamic "retry_strategy" {
+    for_each = var.batch_job_definition_retry_strategy_attempts > 0 ? [true] : []
+    content {
+      attempts = var.batch_job_definition_retry_strategy_attempts
+      evaluate_on_exit {
+        on_status_reason = "Host EC2*"
+        action           = "RETRY"
+      }
+      evaluate_on_exit {
+        on_reason = "*"
+        action    = "EXIT"
+      }
     }
   }
-  timeout {
-    attempt_duration_seconds = var.batch_job_definition_timeout_attempt_duration_seconds
+  dynamic "timeout" {
+    for_each = var.batch_job_definition_timeout_attempt_duration_seconds > 0 ? [true] : []
+    content {
+      attempt_duration_seconds = var.batch_job_definition_timeout_attempt_duration_seconds
+    }
   }
   tags = {
     Name       = "${local.batch_job_definition_name_prefix}-on-ec2-${each.key}"

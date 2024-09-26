@@ -42,10 +42,10 @@ variable "batch_job_definition_container_properties_command" {
   default     = []
 }
 
-variable "batch_job_definition_container_properties_environment" {
+variable "batch_job_definition_container_properties_environment_variables" {
   description = "Environment variables in the container properties for Batch job definitions"
-  type        = list(map(string))
-  default     = []
+  type        = map(string)
+  default     = {}
 }
 
 variable "batch_job_definition_container_properties_resource_requirements_vcpus_fargate" {
@@ -103,8 +103,8 @@ variable "batch_job_definition_retry_strategy_attempts" {
   type        = number
   default     = 1
   validation {
-    condition     = var.batch_job_definition_retry_strategy_attempts >= 1 && var.batch_job_definition_retry_strategy_attempts <= 10
-    error_message = "Retry strategy attempts on host EC2 failure for Batch job definitions must be between 1 and 10"
+    condition     = var.batch_job_definition_retry_strategy_attempts >= 0 && var.batch_job_definition_retry_strategy_attempts <= 10
+    error_message = "Retry strategy attempts on host EC2 failure for Batch job definitions must be between 0 and 10"
   }
 }
 
@@ -113,8 +113,8 @@ variable "batch_job_definition_timeout_attempt_duration_seconds" {
   type        = number
   default     = 86400
   validation {
-    condition     = var.batch_job_definition_timeout_attempt_duration_seconds >= 60
-    error_message = "Timeout attempt duration in seconds for Batch job definitions must be greater than or equal to 60"
+    condition     = var.batch_job_definition_timeout_attempt_duration_seconds == 0 || var.batch_job_definition_timeout_attempt_duration_seconds >= 60
+    error_message = "Timeout attempt duration in seconds for Batch job definitions must be greater than or equal to 60 or 0"
   }
 }
 
