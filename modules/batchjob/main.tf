@@ -20,6 +20,10 @@ resource "aws_batch_job_definition" "fargate" {
         value = v
       }
     ]
+    runtimePlatform = {
+      cpuArchitecture       = var.batch_job_definition_container_properties_runtime_platform_cpu_architecture
+      operatingSystemFamily = "LINUX"
+    }
     resourceRequirements = [
       {
         type  = "VCPU"

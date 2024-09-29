@@ -3,6 +3,11 @@ locals {
   repo_root                                                 = get_repo_root()
   env_vars                                                  = read_terragrunt_config(find_in_parent_folders("env.hcl"))
   batch_compute_environment_compute_resources_instance_type = ["m7g", "c7g", "r7g", "r8g"]
+  batch_cpu_architecture                                    = "ARM64"
+  docker_image_build_platforms = {
+    "X86_64" = "linux/amd64"
+    "ARM64"  = "linux/arm64"
+  }
 }
 
 terraform {
@@ -85,7 +90,7 @@ inputs = {
   docker_image_build_context                                               = "${local.repo_root}/docker"
   docker_image_build_dockerfile                                            = "Dockerfile"
   docker_image_build_build_args                                            = {}
-  docker_image_build_platform                                              = "linux/arm64"
+  docker_image_build_platform                                              = local.docker_image_build_platforms[local.batch_cpu_architecture]
   docker_image_primary_tag                                                 = get_env("DOCKER_PRIMARY_TAG", run_cmd("--terragrunt-quiet", "git", "rev-parse", "--short", "HEAD"))
   docker_host                                                              = get_env("DOCKER_HOST", "unix:///var/run/docker.sock")
   cloudwatch_logs_retention_in_days                                        = 30
@@ -107,6 +112,7 @@ inputs = {
   batch_job_definition_container_properties_environment_variables = {
     "AWS_DEFAULT_REGION" = local.env_vars.locals.region
   }
+  batch_job_definition_container_properties_runtime_platform_cpu_architecture    = local.batch_cpu_architecture
   batch_job_definition_container_properties_resource_requirements_vcpus_fargate  = 0.25
   batch_job_definition_container_properties_resource_requirements_memory_fargate = 512
   batch_job_definition_container_properties_resource_requirements_vcpus_ec2      = 1

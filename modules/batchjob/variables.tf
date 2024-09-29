@@ -48,6 +48,16 @@ variable "batch_job_definition_container_properties_environment_variables" {
   default     = {}
 }
 
+variable "batch_job_definition_container_properties_runtime_platform_cpu_architecture" {
+  description = "Runtime platform CPU architecture in the container properties for Batch job definitions"
+  type        = string
+  default     = "ARM64"
+  validation {
+    condition     = var.batch_job_definition_container_properties_runtime_platform_cpu_architecture == "ARM64" || var.batch_job_definition_container_properties_runtime_platform_cpu_architecture == "X86_64"
+    error_message = "Runtime platform CPU architecture in the container properties for Batch job definitions must be ARM64 or X86_64"
+  }
+}
+
 variable "batch_job_definition_container_properties_resource_requirements_vcpus_fargate" {
   description = "Required FARGATE vCPUs in the container properties for Batch job definitions on Fargate"
   type        = number
