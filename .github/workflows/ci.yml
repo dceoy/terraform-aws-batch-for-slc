@@ -47,7 +47,6 @@ jobs:
       terragrunt-working-directories: envs/dev
       terraform-version: latest
       merged-pr-branch-prefix: ${{ startswith(github.head_ref, 'dependabot/terraform/') && 'dependabot/terraform/' || null }}
-      delete-merged-branch: true
       search-path-for-lint-and-scan: .
       terragrunt-version: latest
       merge-pr: ${{ github.event_name == 'pull_request' }}

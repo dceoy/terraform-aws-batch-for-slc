@@ -52,8 +52,8 @@ EOF
 
 catalog {
   urls = [
-    "github.com/dceoy/submodules/terraform-aws-vpc-for-slc",
-    "github.com/dceoy/submodules/terraform-aws-docker-based-lambda",
+    "github.com/dceoy/terraform-aws-vpc-for-slc",
+    "github.com/dceoy/terraform-aws-docker-based-lambda",
     "${local.repo_root}/modules/batch"
   ]
 }
