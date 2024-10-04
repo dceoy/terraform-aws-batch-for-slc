@@ -17,9 +17,6 @@ on:
           - upgrade
         description: Choose the workflow to run
         default: lint-and-scan
-permissions:
-  contents: write
-  pull-requests: write
 jobs:
   terraform-lint-and-scan:
     if: >
@@ -29,6 +26,8 @@ jobs:
         && (! startswith(github.head_ref, 'dependabot/terraform/'))
         && (! startswith(github.head_ref, 'renovate/'))
       ) || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'lint-and-scan')
+    permissions:
+      contents: write
     uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lint-and-scan.yml@main
     with:
       search-path: .
@@ -40,6 +39,9 @@ jobs:
         github.event_name == 'pull_request'
         && (startswith(github.head_ref, 'dependabot/terraform/') || startswith(github.head_ref, 'renovate/'))
       ) || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'upgrade')
+    permissions:
+      contents: write
+      pull-requests: write
     uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lock-files-upgrade-and-pr-merge.yml@main
     with:
       terragrunt-working-directories: envs/dev
@@ -49,6 +51,8 @@ jobs:
       search-path-for-lint-and-scan: .
       terragrunt-version: latest
       merge-pr: ${{ github.event_name == 'pull_request' }}
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   dependabot-auto-merge:
     if: >
       github.event_name == 'pull_request'
@@ -56,6 +60,11 @@ jobs:
       && (! startswith(github.head_ref, 'dependabot/terraform/'))
     needs:
       - terraform-lint-and-scan
+    permissions:
+      contents: write
+      pull-requests: write
     uses: dceoy/gh-actions-for-devops/.github/workflows/dependabot-auto-merge.yml@main
     with:
       unconditional: true
+    secrets:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
