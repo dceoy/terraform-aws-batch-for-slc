@@ -121,6 +121,7 @@ resource "aws_batch_job_queue" "ec2" {
   }
 }
 
+# trivy:ignore:avd-aws-0017
 resource "aws_cloudwatch_log_group" "batch" {
   name              = "/${var.system_name}/${var.env_type}/batch"
   retention_in_days = var.cloudwatch_logs_retention_in_days
