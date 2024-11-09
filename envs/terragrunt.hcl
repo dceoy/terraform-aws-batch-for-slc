@@ -54,7 +54,8 @@ catalog {
   urls = [
     "github.com/dceoy/terraform-aws-vpc-for-slc",
     "github.com/dceoy/terraform-aws-docker-based-lambda",
-    "${local.repo_root}/modules/batch"
+    "${local.repo_root}/modules/batch",
+    "${local.repo_root}/modules/batchjob"
   ]
 }
 
