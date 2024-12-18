@@ -155,9 +155,9 @@ resource "aws_iam_role" "service" {
     "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
   ]
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-service-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-service-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
@@ -183,9 +183,9 @@ resource "aws_iam_role" "execution" {
     "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   ]
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-execution-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-execution-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
@@ -226,9 +226,9 @@ resource "aws_iam_role" "job" {
   })
   managed_policy_arns = var.batch_job_iam_role_managed_policy_arns
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-job-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-job-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
@@ -255,9 +255,9 @@ resource "aws_iam_role" "ec2" {
     "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
   ]
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-ec2-instance-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-ec2-instance-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
@@ -296,9 +296,9 @@ resource "aws_iam_role" "spotfleet" {
     "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole"
   ]
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-spotfleet-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-spotfleet-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
@@ -323,9 +323,9 @@ resource "aws_iam_role" "client" {
   })
   managed_policy_arns = var.batch_client_iam_role_managed_policy_arns
   tags = {
-    Name    = "${var.system_name}-${var.env_type}-batch-client-iam-role"
-    System  = var.system_name
-    EnvType = var.env_type
+    Name       = "${var.system_name}-${var.env_type}-batch-client-iam-role"
+    SystemName = var.system_name
+    EnvType    = var.env_type
   }
 }
 
