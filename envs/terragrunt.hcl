@@ -82,7 +82,7 @@ inputs = {
     "ecr.dkr", "ecr.api", "ecs", "ecs-agent", "ecs-telemetry", "logs", "kms", "secretsmanager"
   ]
   ecr_repository_name                                                      = local.image_name
-  ecr_image_secondary_tags                                                 = compact(split(",", get_env("DOCKER_METADATA_OUTPUT_TAGS", "latest")))
+  ecr_image_secondary_tags                                                 = compact(split("\n", get_env("DOCKER_METADATA_OUTPUT_TAGS", "latest")))
   ecr_image_tag_mutability                                                 = "MUTABLE"
   ecr_force_delete                                                         = true
   ecr_lifecycle_policy_image_count                                         = 1
