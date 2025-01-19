@@ -37,17 +37,17 @@ remote_state {
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "aws" {
-  region = "${local.env_vars.locals.region}"
-  default_tags {
-    tags = {
-      SystemName = "${local.env_vars.locals.system_name}"
-      EnvType    = "${local.env_vars.locals.env_type}"
+  contents  = <<-EOF
+  provider "aws" {
+    region = "${local.env_vars.locals.region}"
+    default_tags {
+      tags = {
+        SystemName = "${local.env_vars.locals.system_name}"
+        EnvType    = "${local.env_vars.locals.env_type}"
+      }
     }
   }
-}
-EOF
+  EOF
 }
 
 catalog {
