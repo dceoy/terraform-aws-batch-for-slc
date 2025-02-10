@@ -1,3 +1,13 @@
+variable "system_name" {
+  description = "System name"
+  type        = string
+}
+
+variable "env_type" {
+  description = "Environment type"
+  type        = string
+}
+
 variable "batch_image_uri" {
   description = "Batch image URI"
   type        = string
@@ -16,18 +26,6 @@ variable "batch_execution_iam_role_arn" {
 variable "batch_cloudwatch_logs_log_group_name" {
   description = "Batch CloudWatch Logs log group name"
   type        = string
-}
-
-variable "system_name" {
-  description = "System name"
-  type        = string
-  default     = "slc"
-}
-
-variable "env_type" {
-  description = "Environment type"
-  type        = string
-  default     = "dev"
 }
 
 variable "batch_job_definition_name_prefix" {
