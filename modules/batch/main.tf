@@ -191,7 +191,7 @@ resource "aws_iam_role" "execution" {
 
 resource "aws_iam_role_policy" "kms" {
   count = var.kms_key_arn != null ? 1 : 0
-  name  = "${var.system_name}-${var.env_type}-batch-execution-iam-role-policy"
+  name  = "${var.system_name}-${var.env_type}-batch-execution-kms-iam-policy"
   role  = aws_iam_role.execution.id
   policy = jsonencode({
     Version = "2012-10-17"
@@ -330,7 +330,7 @@ resource "aws_iam_role" "client" {
 }
 
 resource "aws_iam_role_policy" "client" {
-  name = "${var.system_name}-${var.env_type}-batch-client-iam-role-policy"
+  name = "${var.system_name}-${var.env_type}-batch-client-iam-policy"
   role = aws_iam_role.client.id
   policy = jsonencode({
     Version = "2012-10-17"
