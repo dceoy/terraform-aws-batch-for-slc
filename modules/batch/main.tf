@@ -3,10 +3,10 @@ resource "aws_batch_compute_environment" "fargate" {
     ondemand = "FARGATE"
     spot     = "FARGATE_SPOT"
   }
-  compute_environment_name = "${var.system_name}-${var.env_type}-batch-compute-environment-fargate-${each.key}"
-  type                     = "MANAGED"
-  state                    = "ENABLED"
-  service_role             = aws_iam_role.service.arn
+  name         = "${var.system_name}-${var.env_type}-batch-compute-environment-fargate-${each.key}"
+  type         = "MANAGED"
+  state        = "ENABLED"
+  service_role = aws_iam_role.service.arn
   compute_resources {
     type               = each.value
     subnets            = var.private_subnet_ids
@@ -25,10 +25,10 @@ resource "aws_batch_compute_environment" "ec2" {
     ondemand = "EC2"
     spot     = "SPOT"
   } : {}
-  compute_environment_name = "${var.system_name}-${var.env_type}-batch-compute-environment-ec2-${each.key}"
-  type                     = "MANAGED"
-  state                    = "ENABLED"
-  service_role             = aws_iam_role.service.arn
+  name         = "${var.system_name}-${var.env_type}-batch-compute-environment-ec2-${each.key}"
+  type         = "MANAGED"
+  state        = "ENABLED"
+  service_role = aws_iam_role.service.arn
   compute_resources {
     type                = each.value
     subnets             = var.private_subnet_ids
@@ -152,14 +152,18 @@ resource "aws_iam_role" "service" {
       }
     ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
-  ]
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-service-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "service" {
+  role_name = aws_iam_role.service.name
+  policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
+  ]
 }
 
 resource "aws_iam_role" "execution" {
@@ -180,14 +184,18 @@ resource "aws_iam_role" "execution" {
       }
     ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-  ]
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-execution-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "execution" {
+  role_name = aws_iam_role.execution.name
+  policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  ]
 }
 
 resource "aws_iam_role_policy" "kms" {
@@ -225,12 +233,16 @@ resource "aws_iam_role" "job" {
       }
     ]
   })
-  managed_policy_arns = var.batch_job_iam_role_managed_policy_arns
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-job-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "job" {
+  role_name   = aws_iam_role.job.name
+  policy_arns = var.batch_job_iam_role_managed_policy_arns
 }
 
 resource "aws_iam_role" "ec2" {
@@ -252,14 +264,19 @@ resource "aws_iam_role" "ec2" {
       }
     ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-  ]
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-ec2-instance-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "ec2" {
+  count     = length(aws_iam_role.ec2) > 0 ? 1 : 0
+  role_name = aws_iam_role.ec2[count.index].name
+  policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+  ]
 }
 
 resource "aws_iam_instance_profile" "ec2" {
@@ -293,14 +310,19 @@ resource "aws_iam_role" "spotfleet" {
       }
     ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole"
-  ]
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-spotfleet-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "spotfleet" {
+  count     = length(aws_iam_role.spotfleet) > 0 ? 1 : 0
+  role_name = aws_iam_role.spotfleet[count.index].name
+  policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole"
+  ]
 }
 
 resource "aws_iam_role" "client" {
@@ -322,12 +344,16 @@ resource "aws_iam_role" "client" {
       }
     ]
   })
-  managed_policy_arns = var.batch_client_iam_role_managed_policy_arns
   tags = {
     Name       = "${var.system_name}-${var.env_type}-batch-client-iam-role"
     SystemName = var.system_name
     EnvType    = var.env_type
   }
+}
+
+resource "aws_iam_role_policy_attachments_exclusive" "client" {
+  role_name   = aws_iam_role.client.name
+  policy_arns = var.batch_client_iam_role_managed_policy_arns
 }
 
 resource "aws_iam_role_policy" "client" {
