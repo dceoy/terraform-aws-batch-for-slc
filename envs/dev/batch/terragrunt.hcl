@@ -8,7 +8,8 @@ dependency "kms" {
   mock_outputs = {
     kms_key_arn = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 dependency "s3" {
@@ -16,7 +17,8 @@ dependency "s3" {
   mock_outputs = {
     s3_iam_policy_arn = "arn:aws:iam::123456789012:policy/s3-iam-policy"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 dependency "subnet" {
@@ -25,7 +27,8 @@ dependency "subnet" {
     private_subnet_ids        = ["subnet-12345678", "subnet-87654321"]
     private_security_group_id = "sg-12345678"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 inputs = {

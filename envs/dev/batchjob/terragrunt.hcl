@@ -7,7 +7,8 @@ dependency "docker" {
   mock_outputs = {
     docker_registry_primary_image_uri = "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-function:latest"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 dependency "batch" {
@@ -17,7 +18,8 @@ dependency "batch" {
     batch_execution_iam_role_arn         = "arn:aws:iam::123456789012:role/my-batch-execution-iam-role"
     batch_cloudwatch_logs_log_group_name = "/aws/batch/job-logs"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 inputs = {

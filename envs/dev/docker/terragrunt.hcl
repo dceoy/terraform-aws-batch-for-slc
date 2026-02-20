@@ -7,7 +7,8 @@ dependency "ecr" {
   mock_outputs = {
     ecr_repository_url = "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-function"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 inputs = {

@@ -7,7 +7,8 @@ dependency "s3" {
   mock_outputs = {
     awslogs_s3_bucket_id = "awslogs-s3-bucket-id"
   }
-  mock_outputs_merge_strategy_with_state = "shallow"
+  mock_outputs_allowed_terraform_commands = ["init", "validate", "plan"]
+  mock_outputs_merge_strategy_with_state  = "shallow"
 }
 
 inputs = {
