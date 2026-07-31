@@ -30,7 +30,7 @@ jobs:
       contents: write
       actions: read
       security-events: write
-    uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lint-and-scan.yml@main  # zizmor: ignore[unpinned-uses]
+    uses: dceoy/gha-for-devops/.github/workflows/terraform-lint-and-scan.yml@main  # zizmor: ignore[unpinned-uses]
     with:
       search-path: .
       terraform-version: latest
@@ -46,7 +46,7 @@ jobs:
       pull-requests: write
       actions: read
       security-events: write
-    uses: dceoy/gh-actions-for-devops/.github/workflows/terraform-lock-files-upgrade-and-pr-merge.yml@main  # zizmor: ignore[unpinned-uses]
+    uses: dceoy/gha-for-devops/.github/workflows/terraform-lock-files-upgrade-and-pr-merge.yml@main  # zizmor: ignore[unpinned-uses]
 
     with:
       terragrunt-working-directories: envs/dev
@@ -70,7 +70,7 @@ jobs:
       actions: read
       checks: read
       statuses: read
-    uses: dceoy/gh-actions-for-devops/.github/workflows/dependabot-auto-merge.yml@main  # zizmor: ignore[unpinned-uses]
+    uses: dceoy/gha-for-devops/.github/workflows/dependabot-auto-merge.yml@main  # zizmor: ignore[unpinned-uses]
 
     with:
       unconditional: true
