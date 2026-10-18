@@ -75,7 +75,10 @@ jobs:
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   source-dependency-submission:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'lint-and-scan')
+    if: >-
+      github.ref == 'refs/heads/main'
+      && (github.event_name == 'push'
+      || (github.event_name == 'workflow_dispatch' && inputs.workflow == 'lint-and-scan'))
     permissions:
       contents: write
     uses: dceoy/gha-for-devops/.github/workflows/dependency-submission.yml@main  # zizmor: ignore[unpinned-uses]
