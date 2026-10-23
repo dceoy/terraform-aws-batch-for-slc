@@ -10,6 +10,8 @@ updates:
       github-actions-dependencies:
         patterns:
           - '*'
+    cooldown:
+      default-days: 1
   - package-ecosystem: docker
     directory: /src/
     schedule:
@@ -19,6 +21,8 @@ updates:
       docker-dependencies:
         patterns:
           - '*'
+    cooldown:
+      default-days: 1
   - package-ecosystem: terraform
     directory: /modules/batch/
     schedule:
@@ -28,3 +32,5 @@ updates:
       terraform-dependencies:
         patterns:
           - '*'
+    cooldown:
+      default-days: 1
