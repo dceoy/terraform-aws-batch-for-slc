@@ -6,13 +6,25 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 10
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - '*'
   - package-ecosystem: docker
     directory: /src/
     schedule:
       interval: daily
     open-pull-requests-limit: 10
+    groups:
+      docker-dependencies:
+        patterns:
+          - '*'
   - package-ecosystem: terraform
     directory: /modules/batch/
     schedule:
       interval: daily
     open-pull-requests-limit: 10
+    groups:
+      terraform-dependencies:
+        patterns:
+          - '*'
