@@ -54,7 +54,7 @@ jobs:
       merged-pr-branch-prefix: ${{ startswith(github.head_ref, 'dependabot/terraform/') && 'dependabot/terraform/' || null }}
       search-path-for-lint-and-scan: .
       terragrunt-version: latest
-      merge-pr: ${{ github.event_name == 'pull_request' }}
+      merge-pr: false
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   dependabot-auto-merge:
