@@ -16,5 +16,6 @@ inputs = {
 }
 
 terraform {
-  source = "git::https://github.com/dceoy/terraform-aws-vpc-for-slc.git//modules/vpc?ref=main"
+  source                   = "git::https://github.com/dceoy/terraform-aws-vpc-for-slc.git//modules/vpc?ref=main"
+  copy_terraform_lock_file = false
 }

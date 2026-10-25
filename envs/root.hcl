@@ -34,6 +34,13 @@ remote_state {
   }
 }
 
+generate "provider_lock" {
+  path      = ".terraform.lock.hcl"
+  if_exists = "overwrite"
+  mutable   = true
+  contents  = file("${get_repo_root()}/modules/${basename(path_relative_to_include())}/.terraform.lock.hcl")
+}
+
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
