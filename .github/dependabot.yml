@@ -24,7 +24,9 @@ updates:
     cooldown:
       default-days: 1
   - package-ecosystem: terraform
-    directory: /modules/batch/
+    directories:
+      - /modules/*
+      - /envs/dev/*
     schedule:
       interval: daily
     open-pull-requests-limit: 10
