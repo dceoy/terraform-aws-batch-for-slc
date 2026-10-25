@@ -33,7 +33,7 @@ jobs:
       snapshot-correlator: terraform-source
       search-path: .
       terraform-version: latest
-      terragrunt-version: latest
+      terragrunt-version: '1.2.1'
   terraform-lock-files-upgrade-and-pr-merge:
     if: >
       (
@@ -51,7 +51,7 @@ jobs:
       terragrunt-working-directories: envs/dev
       terraform-version: latest
       search-path-for-lint-and-scan: .
-      terragrunt-version: latest
+      terragrunt-version: '1.2.1'
       merge-pr: ${{ github.event_name == 'pull_request' }}
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
