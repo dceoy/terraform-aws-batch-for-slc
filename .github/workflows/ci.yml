@@ -59,6 +59,6 @@ jobs:
     uses: dceoy/gha-for-devops/.github/workflows/dependabot-auto-merge.yml@main  # zizmor: ignore[unpinned-uses]
 
     with:
-      unconditional: ${{ ! startsWith(github.head_ref, 'dependabot/terraform/') }}
+      unconditional: true
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
