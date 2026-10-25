@@ -31,7 +31,7 @@ jobs:
       snapshot-correlator: terraform-source
       search-path: .
       terraform-version: latest
-      terragrunt-version: '1.2.1'
+      terragrunt-version: latest
   terraform-lock-files-upgrade:
     if: github.event_name == 'workflow_dispatch' && inputs.workflow == 'upgrade'
     permissions:
@@ -41,7 +41,7 @@ jobs:
     with:
       terragrunt-working-directories: envs/dev
       terraform-version: latest
-      terragrunt-version: '1.2.1'
+      terragrunt-version: latest
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   dependabot-auto-merge:
