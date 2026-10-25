@@ -40,7 +40,7 @@ jobs:
     uses: dceoy/gha-for-devops/.github/workflows/terraform-lock-files-upgrade.yml@main  # zizmor: ignore[unpinned-uses]
     with:
       terragrunt-working-directories: envs/dev
-      terragrunt-lockfile-root: modules
+      terraform-working-directories: modules
       terraform-version: latest
       terragrunt-version: latest
     secrets:
