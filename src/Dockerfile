@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
-ARG UBUNTU_VERSION=24.04
-FROM public.ecr.aws/docker/library/ubuntu:${UBUNTU_VERSION} AS base
+ARG DEBIAN_TAG=trixie-dev
+FROM dhi.io/debian-base:${DEBIAN_TAG} AS base
 
 ARG USER_UID=1001
 ARG USER_GID=1001
@@ -25,7 +25,7 @@ RUN \
       apt-get -y update \
       && apt-get -y upgrade \
       && apt-get -y install --no-install-recommends --no-install-suggests \
-        ca-certificates
+        passwd
 
 HEALTHCHECK NONE
 
