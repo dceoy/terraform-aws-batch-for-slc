@@ -11,10 +11,6 @@ ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 RUN \
-      groupadd --gid "${USER_GID}" "${USER_NAME}" \
-      && useradd --uid "${USER_UID}" --gid "${USER_GID}" --shell /bin/bash --create-home "${USER_NAME}"
-
-RUN \
       rm -f /etc/apt/apt.conf.d/docker-clean \
       && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' \
         > /etc/apt/apt.conf.d/keep-cache
@@ -26,6 +22,10 @@ RUN \
       && apt-get -y upgrade \
       && apt-get -y install --no-install-recommends --no-install-suggests \
         passwd
+
+RUN \
+      groupadd --gid "${USER_GID}" "${USER_NAME}" \
+      && useradd --uid "${USER_UID}" --gid "${USER_GID}" --shell /bin/bash --create-home "${USER_NAME}"
 
 HEALTHCHECK NONE
 
