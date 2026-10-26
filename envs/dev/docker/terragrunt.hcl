@@ -16,5 +16,6 @@ inputs = {
 }
 
 terraform {
-  source = "git::https://github.com/dceoy/terraform-aws-docker-based-lambda.git//modules/docker?ref=main"
+  source                   = "git::https://github.com/dceoy/terraform-aws-docker-based-lambda.git//modules/docker?ref=main"
+  copy_terraform_lock_file = false
 }

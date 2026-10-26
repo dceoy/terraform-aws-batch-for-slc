@@ -40,5 +40,6 @@ inputs = {
 }
 
 terraform {
-  source = "${get_repo_root()}/modules/batch"
+  source                   = "${get_repo_root()}/modules/batch"
+  copy_terraform_lock_file = false
 }

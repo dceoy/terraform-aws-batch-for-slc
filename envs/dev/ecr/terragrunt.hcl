@@ -3,5 +3,6 @@ include "root" {
 }
 
 terraform {
-  source = "git::https://github.com/dceoy/terraform-aws-docker-based-lambda.git//modules/ecr?ref=main"
+  source                   = "git::https://github.com/dceoy/terraform-aws-docker-based-lambda.git//modules/ecr?ref=main"
+  copy_terraform_lock_file = false
 }
